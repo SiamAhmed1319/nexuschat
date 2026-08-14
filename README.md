@@ -52,4 +52,4 @@ Join our community of developers creating universal apps.
 
 ## Developer information
 
-- [Facebook](https://facebook.com/mdsiamahmed1319)
+- [Facebook](https://facebook.com/mdsiamahmed1319): Join me on Facebook
