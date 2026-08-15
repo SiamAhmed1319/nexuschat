@@ -185,6 +185,7 @@ export default function Home () {
   const [visible, setVisible] = useState(false);
   const [chatId, setChatId] = useState(null);
   //Alert
+  const [actionType, setActionType] = useState(null)
   const [modalAlert, setModalAlert] = useState(false);
   
   return (
@@ -295,30 +296,45 @@ export default function Home () {
             </View>
             <View style={Styles.modalBody}>
               <Pressable
+                onPress={()=>{
+                  setVisible(false)
+                  setActionType('pin')
+                  setModalAlert(true)
+                }}
                 style={({pressed})=>[
-                Styles.modalItem,
-                pressed && Styles.press
-              ]}
+                  Styles.modalItem,
+                  pressed && Styles.press
+                ]}
               >
                 <MaterialIcons name='push-pin' size={24} color='gray'/>
                 <Text style={[Styles.modalText]}>Pin</Text>
               </Pressable>
               
               <Pressable
+                onPress={()=>{
+                  setVisible(false)
+                  setActionType('mute')
+                  setModalAlert(true)
+                }}
                 style={({pressed})=>[
-                Styles.modalItem,
-                pressed && Styles.press
-              ]}
+                  Styles.modalItem,
+                  pressed && Styles.press
+                ]}
               >
                 <MaterialIcons name='notifications' size={24} color='gray'/>
                 <Text style={[Styles.modalText]}>Mute</Text>
               </Pressable>
               
               <Pressable
+                onPress={()=>{
+                  setVisible(false)
+                  setActionType('block')
+                  setModalAlert(true)
+                }}
                 style={({pressed})=>[
-                Styles.modalItem,
-                pressed && Styles.press
-              ]}
+                  Styles.modalItem,
+                  pressed && Styles.press
+                ]}
               >
                 <MaterialIcons name='block' size={24} color='gray'/>
                 <Text style={[Styles.modalText]}>Block</Text>
@@ -327,12 +343,13 @@ export default function Home () {
               <Pressable
                 onPress={()=>{
                   setModalAlert(true)
+                  setActionType('delete')
                   setVisible(false)
                 }}
                 style={({pressed})=>[
-                Styles.modalItem,
-                pressed && Styles.press
-              ]}
+                  Styles.modalItem,
+                  pressed && Styles.press
+                ]}
               >
                 <MaterialIcons name='delete' size={24} color='red'/>
                 <Text style={[Styles.modalText, Styles.delete]}>Delete</Text>
@@ -349,15 +366,36 @@ export default function Home () {
           style={Styles.alertmodal}
         >
           <View style={Styles.alertbox}>
-            <Text style={Styles.alertHeader}>Delete all chat history?</Text>
-            <Text style={Styles.alertbody}>Are you sure delete this chat history</Text>
+            <Text style={Styles.alertHeader}>
+              {actionType === 'pin' && 'Pin This Chat?'}
+              {actionType === 'mute' && 'Mute Chat?'}
+              {actionType === 'block' && 'Block This User?'}
+              {actionType === 'delete' && 'Delete this chat?'}
+            </Text>
+            <Text style={Styles.alertbody}>
+              {actionType === 'delete' && 'This will delete your entire conversation'}
+              {actionType === 'mute' && 'You will not receive notifications'}
+              {actionType === 'block' && 'You will no longer receive messages'}
+              {actionType === 'pin' && 'This chat will appear at the top'}
+            </Text>
             <View style={Styles.alertbtn}>
               <Pressable
                 onPress={()=>setModalAlert(false)}
               >
-                <Text>Cancle</Text>
+                <Text style={[Styles.blue, Styles.actionbtn]}>Cancle</Text>
               </Pressable>
-              
+              <Pressable onPress={()=>{
+                setModalAlert(false)
+                if(actionType === 'delete') console.log("Delete", chatId)
+                if(actionType === 'block') console.log("Block", chatId)
+              }}>
+                <Text style={[
+                  (actionType === 'delete' || actionType === 'block') ? Styles.red: Styles.blue,
+                  Styles.actionbtn
+                ]}>
+                  {actionType === 'delete' ? 'Delete' : actionType === 'block' ? 'Block' : 'Ok' }
+                </Text>
+              </Pressable>
             </View>
           </View>
         </Modal>
@@ -523,5 +561,19 @@ export default function Home () {
       fontWeight: '500',
       marginBottom: verticalScale(15),
     },
-    alertbtn:{},
+    alertbtn:{
+      flexDirection: 'row',
+      gap: scale(18),
+      justifyContent: 'flex-end'
+    },
+    actionbtn:{
+      fontSize: moderateScale(13),
+      fontWeight: '500'
+    },
+    red:{
+      color: 'red'
+    },
+    blue:{
+      color: '#007aff'
+    },
   });
