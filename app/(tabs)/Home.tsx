@@ -14,6 +14,7 @@ import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 import Modal from 'react-native-modal';
 
+
 //Database same
 const userDatabase = [
     {
@@ -181,8 +182,10 @@ const userDatabase = [
 export default function Home () {
   const router = useRouter();
   //Custom modal
-  const [visible, setVisible] = useState(false)
-  const [chatId, setChatId] = useState(null)
+  const [visible, setVisible] = useState(false);
+  const [chatId, setChatId] = useState(null);
+  //Alert
+  const [modalAlert, setModalAlert] = useState(false);
   
   return (
     <>
@@ -322,6 +325,10 @@ export default function Home () {
               </Pressable>
               
               <Pressable
+                onPress={()=>{
+                  setModalAlert(true)
+                  setVisible(false)
+                }}
                 style={({pressed})=>[
                 Styles.modalItem,
                 pressed && Styles.press
@@ -329,6 +336,26 @@ export default function Home () {
               >
                 <MaterialIcons name='delete' size={24} color='red'/>
                 <Text style={[Styles.modalText, Styles.delete]}>Delete</Text>
+              </Pressable>
+              
+            </View>
+          </View>
+        </Modal>
+        
+        <Modal
+          isVisible={modalAlert}
+          onBackdropPress={()=>setModalAlert(false)}
+          onBackButtonPress={()=>setModalAlert(false)}
+          style={Styles.alertmodal}
+        >
+          <View style={Styles.alertbox}>
+            <Text style={Styles.alertHeader}>Delete all chat history?</Text>
+            <Text style={Styles.alertbody}>Are you sure delete this chat history</Text>
+            <View style={Styles.alertbtn}>
+              <Pressable
+                onPress={()=>setModalAlert(false)}
+              >
+                <Text>Cancle</Text>
               </Pressable>
               
             </View>
@@ -474,5 +501,27 @@ export default function Home () {
     },
     delete:{
       color: 'red',
-    }
+    },
+    
+    //Alert Modal
+    alertmodal:{
+      
+    },
+    alertbox:{
+      backgroundColor: '#fff',
+      borderRadius: moderateScale(8),
+      paddingHorizontal: moderateScale(15),
+      paddingVertical: moderateScale(10)
+    },
+    alertHeader:{
+      fontSize: moderateScale(18),
+      fontWeight: '500',
+      marginBottom: verticalScale(10),
+    },
+    alertbody:{
+      fontSize: moderateScale(13),
+      fontWeight: '500',
+      marginBottom: verticalScale(15),
+    },
+    alertbtn:{},
   });
