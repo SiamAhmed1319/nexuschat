@@ -1,8 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 
-interface Props {
-  // Define your props here
-}
+
 
 const index = () => {
   return (
